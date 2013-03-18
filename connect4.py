@@ -108,40 +108,163 @@ class Connect4():
         player = self.game_board[row][column]
         if not player:
             return False
-        print 'checking location (%s, %s) for player %s' % (row, column, player)
-        if (row+3) <= 6:
-            #check North
-            for row_check in range(row, row+4):
-                if self.game_board[row_check][column] != player:
-                    break
+        
+        if self.check_north(row, column):
             return player
-        if (row-3) >= 0:
-            for row_check in range(row, row-4):
-                if self.game_board[row_check][column] != player:
-                    break
+        elif self.check_south(row, column):
             return player
-        if (column+3) <= 6:
-            for column_check in range(column, column+4):
-                if self.game_board[row][column_check] != player:
-                    break
+        elif self.check_east(row, column):
             return player
-        if (column-3) >= 0:
-            for column_check in range(column, column-4):
-                if self.game_board[row][column_check] != player:
-                    break
+        elif self.check_west(row, column):
             return player
-        if ((row+3) <= 6) and ((column+3) <= 6):
-            #check North East
-            pass
-        if ((row+3) <= 6) and ((column-3) <= 6):
-            #check North West
-            pass
-        if ((row-3) <= 6) and ((column+3) <= 6):
-            #check South East
-            pass
-        if ((row-3) <= 6) and ((column-3) <= 6):
-            #check South West
-            pass
-        return false
+        elif self.check_north_east(row, column):
+            return player
+        elif self.check_north_west(row, column):
+            return player
+        elif self.check_south_east(row, column):
+            return player
+        elif self.check_south_west(row, column):
+            return player
+        else:
+            return false
                 
+                
+    def check_north(self, row, column):
+        player = self.game_board[row][column]
+        if not player:
+            return False
+        if (row-3) < 0:
+            return False
+        else:
+            #check North
+            piece_count = 0
+            for row_check in range(row, row-4, -1):
+                if self.game_board[row_check][column] == player:
+                    piece_count += 1                    
+            if piece_count == 4:
+                return player
+            else:
+                return False
+    
+    def check_south(self, row, column):
+        player = self.game_board[row][column]
+        if not player:
+            return False
+        if (row+3) > 7:
+            return False
+        else:
+            piece_count = 0
+            for row_check in range(row, row+4):
+                if self.game_board[row_check][column] == player:
+                    piece_count += 1
+
+            if piece_count == 4:
+                return player
+            else:
+                return False
+
+                
+    def check_east(self, row, column):
+        player = self.game_board[row][column]
+        if not player:
+            return False
+        if (column+3) > 7:
+            return False
+        else:
+            piece_count = 0
+            for column_check in range(column, column+4):
+                if self.game_board[row][column_check] == player:
+                    piece_count += 1
+
+            if piece_count == 4:
+                return player
+            else:
+                return False
+
+    def check_west(self, row, column):
+        player = self.game_board[row][column]
+        if not player:
+            return False
+        if (column-3) < 0:
+            return False
+        else:
+            piece_count = 0
+            for column_check in range(column, column-4, -1):
+                if self.game_board[row][column_check] == player:
+                    piece_count += 1
+
+            if piece_count == 4:
+                return player
+            else:
+                return False
+
+    def check_north_east(self, row, column):
+        player = self.game_board[row][column]
+        if not player:
+            return False
+        if ((column+3) > 7) or ((row-3) < 0):
+            return False
+        else:
+            piece_count = 0
+            for column_check, row_check in zip(
+                range(column, column+4), range(row, row-4, -1)):
+                if self.game_board[row_check][column_check] == player:
+                    piece_count += 1
+                 
+            if piece_count == 4:
+                return player
+            else:
+                return False
+   
+    def check_north_west(self, row, column):
+        player = self.game_board[row][column]
+        if not player:
+            return False
+        if ((column-3) < 0) or ((row-3) < 0):
+            return False
+        else:
+            piece_count = 0
+            for column_check, row_check in zip(
+                range(column, column-4, -1), range(row, row-4, -1)):
+                if self.game_board[row_check][column_check] == player:
+                    piece_count += 1
+            if piece_count == 4:
+                return player
+            else:
+                return False
+                 
+    def check_south_east(self, row, column):
+        player = self.game_board[row][column]
+        if not player:
+            return False
+        if ((column+3) > 7) or ((row+3) > 7):
+            return False
+        else:
+            piece_count = 0
+            for column_check, row_check in zip(
+                range(column, column+4), range(row, row+4)):
+                if self.game_board[row_check][column_check] == player:
+                    piece_count += 1
+            if piece_count == 4:
+                return player
+            else:
+                return False
+
+    def check_south_west(self, row, column):
+        player = self.game_board[row][column]
+        if not player:
+            return False
+        if ((column-3) < 0) or ((row+3) > 7):
+            return False
+        else:
+            piece_count = 0
+            for column_check, row_check in zip(
+                range(column, column-4, -1), range(row, row+4)):
+                if self.game_board[row_check][column_check] == player:
+                    piece_count += 1
+
+            if piece_count == 4:
+                return player
+            else:
+                return False
                     
